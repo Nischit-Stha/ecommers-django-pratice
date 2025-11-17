@@ -1,0 +1,24 @@
+#!/bin/bash
+set -e
+
+# Simple pre-commit hook to run basic Django checks locally.
+# Place this file at .git/hooks/pre-commit (symlink or copy) and make it executable:
+#   cp scripts/pre-commit .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit
+
+echo "Running Django system checks..."
+python manage.py check || { echo "django check failed"; exit 1; }
+
+echo "Checking for missing migrations (dry-run)..."
+python manage.py makemigrations --check --dry-run || {
+  echo "You have model changes without migrations. Run: python manage.py makemigrations";
+  exit 1;
+}
+
+# Run flake8 if available (optional)
+if command -v flake8 >/dev/null 2>&1; then
+  echo "Running flake8..."
+  flake8 || { echo "flake8 reported issues"; exit 1; }
+fi
+
+echo "Pre-commit checks passed."
+exit 0
