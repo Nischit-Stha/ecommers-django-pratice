@@ -5,18 +5,32 @@ from .models import *
 
 # Create your views here.
 class Base(View):
-    view = {}
+    pass
 
 
 class HomeView(Base):
 
-    def get(self,request):
-        self.view['categories'] = Category.objects.all()
-        self.view['sliders'] = Slider.objects.all()
-        self.view['ads'] = AD.objects.all()
-        self.view['brands'] = Brand.objects.all()
-        self.view['customers'] = Customer.objects.all()
-        self.view['products'] = Product.objects.all()   
-        self.view['Hots'] = Product.objects.filter(label='hot')
-        self.view['News'] = Product.objects.filter(label='new')
-        return render(request, 'index.html')
+    def get(self, request):
+        view = {}
+        view['categories'] = Category.objects.all()
+        view['sliders'] = Slider.objects.all()
+        view['ads'] = AD.objects.all()
+        view['brands'] = Brand.objects.all()
+        view['customers'] = Customer.objects.all()
+        view['products'] = Product.objects.all()
+        view['hots'] = Product.objects.filter(labels='hot')
+        view['news'] = Product.objects.filter(labels='new')
+        return render(request, 'index.html', view)
+
+
+class CategoryView(Base):
+
+    def get(self, request, slug):
+        category = Category.objects.get(slug=slug)
+        view = {}
+        view['category'] = category
+        view['products'] = Product.objects.filter(category=category)
+        return render(request, 'product-list.html', view)
+        self.view['subcategories'] = SubCategory.objects.filter(category=self.view['category'])
+        self.view['products'] = Product.objects.filter(category=self.view['category'])
+        return render(request, 'category.html')

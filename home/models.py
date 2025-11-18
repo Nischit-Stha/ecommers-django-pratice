@@ -32,6 +32,7 @@ class AD(models.Model):
     image = models.ImageField(upload_to='media')
     rank = models.IntegerField()
     url = models.URLField(max_length=300, blank=True)
+    description = models.TextField(blank=True)
 
     def __str__(self):
         return self.name 
