@@ -15,13 +15,13 @@
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400|Source+Code+Pro:700,900&display=swap" rel="stylesheet">
 
         <!-- CSS Libraries -->
-        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-        <link href="lib/slick/slick.css" rel="stylesheet">
-        <link href="lib/slick/slick-theme.css" rel="stylesheet">
+            <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+            <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+            <link href="{% static 'lib/slick/slick.css' %}" rel="stylesheet">
+            <link href="{% static 'lib/slick/slick-theme.css' %}" rel="stylesheet">
 
-        <!-- Template Stylesheet -->
-        <link href="css/style.css" rel="stylesheet">
+            <!-- Template Stylesheet -->
+            <link href="{% static 'css/style.css' %}" rel="stylesheet">
     </head>
 
     <body>
@@ -90,7 +90,7 @@
                     <div class="col-md-3">
                         <div class="logo">
                             <a href="index.html">
-                                <img src="img/logo.png" alt="Logo">
+                                <img src="{% static 'img/logo.png' %}" alt="Logo">
                             </a>
                         </div>
                     </div>
@@ -178,12 +178,10 @@
         <div class="brand">
             <div class="container-fluid">
                 <div class="brand-slider">
-                    <div class="brand-item"><img src="img/brand-1.png" alt=""></div>
-                    <div class="brand-item"><img src="img/brand-2.png" alt=""></div>
-                    <div class="brand-item"><img src="img/brand-3.png" alt=""></div>
-                    <div class="brand-item"><img src="img/brand-4.png" alt=""></div>
-                    <div class="brand-item"><img src="img/brand-5.png" alt=""></div>
-                    <div class="brand-item"><img src="img/brand-6.png" alt=""></div>
+                    {% for brand in brands %}
+                    <a href="/brand/{{brand.slug}}">
+                    <div class="brand-item"><img src="{{brand.image.url}}" alt="brand image"></div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
@@ -242,7 +240,7 @@
                         {% for ad in ads %}
                         {% if ad.rank == 3 %}   
                         <div class="category-item ch-400">
-                            <img src="{{ad.image.url}}" />
+                                <img src="{% static '{{ad.image.url}}' %}" />
                             <a class="category-name" href="">
                                 <p>{{ad.description}}</p>
                             </a>
@@ -347,7 +345,7 @@
                                 </div>
                             </div>
                             <div class="product-image">
-                                <a href="product-detail.html">
+                                <a href="/product/{{hot.slug}}">
                                     <img src="{{hot.image.url}}" alt="Product Image">
                                 </a>
                                 <div class="product-action">
@@ -411,8 +409,8 @@
                                 </div>
                             </div>
                             <div class="product-image">
-                                <a href="product-detail.html">
-                                    <img src="new.image.url" alt="Product Image">
+                                <a href="/product/{{new.slug}}">
+                                    <img src="{{new.image.url}}" alt="Product Image">
                                 </a>
                                 <div class="product-action">
                                     <a href="#"><i class="fa fa-cart-plus"></i></a>

@@ -36,7 +36,27 @@ class CategoryView(Base):
 class BrandView(Base):
 
     def get(self, request, slug):
-        ids = Brand.objects.get(slug=slug).id
-        view = {}   
-        self.views['product_brand'] = Product.objects.filter(brand_id=ids)
-        return render(request, 'brand.html', self.views)
+        brand = get_object_or_404(Brand, slug=slug)
+        view = {}
+        view['brand'] = brand
+        view['product_brand'] = Product.objects.filter(brand=brand)
+        return render(request, 'brand.html', view)
+    
+
+class ProductDetailView(Base):
+
+    def get(self, request, slug):
+        product = get_object_or_404(Product, slug=slug)
+        view = {}
+        view['product'] = product
+        return render(request, 'product-detail.html', view)
+    
+
+class SearchView(Base):
+
+    def get(self, request):
+        query = request.GET.get('query')
+        view = {}
+        view['search_products'] = Product.objects.filter(name__icontains=query)
+        view['query'] = query
+        return render(request, 'search.html', view)
