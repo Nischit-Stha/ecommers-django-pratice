@@ -41,6 +41,7 @@ class Brand(models.Model):
     name = models.CharField(max_length=300)
     image = models.ImageField(upload_to='media')
     rank  = models.IntegerField()
+    slug = models.CharField(max_length=300, unique=True)
 
     def __str__(self):
         return self.name    

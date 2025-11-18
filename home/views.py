@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views.generic import View
 from .models import *
 
@@ -26,11 +26,17 @@ class HomeView(Base):
 class CategoryView(Base):
 
     def get(self, request, slug):
-        category = Category.objects.get(slug=slug)
+        category = get_object_or_404(Category, slug=slug)
         view = {}
         view['category'] = category
-        view['products'] = Product.objects.filter(category=category)
-        return render(request, 'product-list.html', view)
-        self.view['subcategories'] = SubCategory.objects.filter(category=self.view['category'])
-        self.view['products'] = Product.objects.filter(category=self.view['category'])
-        return render(request, 'category.html')
+        view['product_category'] = Product.objects.filter(category=category)
+        return render(request, 'category.html', view)
+    
+
+class BrandView(Base):
+
+    def get(self, request, slug):
+        ids = Brand.objects.get(slug=slug).id
+        view = {}   
+        self.views['product_brand'] = Product.objects.filter(brand_id=ids)
+        return render(request, 'brand.html', self.views)
